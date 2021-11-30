@@ -21,12 +21,63 @@ let maze;
 let mazeHeight;
 let mazeWidth;
 let player;
+let events;
+const messages = [
+  "Gained 15 pounds",
+  "Class waitlisted",
+  "Caught cheating on a test",
+  "Bad project teammate",
+  "Messy roommate",
+  "Failed internship interview",
+  "Ghosted by crush",
+  "Aced an exam",
+  "Failed an exam",
+  "Made a friend",
+  "First college party",
+  "Ghosted by recruiter",
+  "Found rats in dorm",
+  "Contemplate dropping out",
+  "Addicted to video games",
+  "Missed a 9 am lecture",
+  "Got sick from dining hall food",
+  "Got a significant other",
+  "Got cheated on"
+];
 
 class Player {
 
   constructor() {
     this.col = 0;
     this.row = 0;
+  }
+
+}
+
+class Events {
+
+  constructor() {
+    
+    this.eventMessages = [];
+    this.generate();
+
+  }
+
+  generate() {
+
+    for (let i = 0; i < messages.length; i++) {
+      this.eventMessages.push(new EventMessage(messages[i]));
+    }
+  
+  }
+
+}
+
+class EventMessage {
+
+  constructor(message) {
+    this.message = message;
+    this.acquired = false;
+    this.acquiredCount = 0;
   }
 
 }
@@ -43,6 +94,8 @@ class MazeCell {
     this.westWall = true;
 
     this.visited = false;
+    this.hasEvent = false;
+    this.eventMessage = "";
   }
 
 }
@@ -55,13 +108,16 @@ class Maze {
     this.cols = cols;
     this.endColor = "#88FF88";
     this.mazeColor = "#000000";
+    this.eventColor = "#a6dee0";
     this.playerColor = "#880088";
     this.rows = rows;
     this.cellSize = cellSize;
 
     this.cells = [];
+    this.eventCells = [];
 
-    this.generate()
+    this.generate();
+    this.generateEvents();
 
   }
 
@@ -148,6 +204,28 @@ class Maze {
 
   }
 
+  generateEvents() {
+    // *Change this later to be based off level difficulty (size)
+    let totalEvents = 8;
+    let rndCol = Math.floor(Math.random() * (this.cols - 1));
+    let rndRow = Math.floor(Math.random() * (this.rows - 1));
+
+    while (totalEvents > 0) {
+      while (this.cells[rndCol][rndRow].hasEvent || (rndCol == 0 && rndRow == 0)) {
+        rndCol = Math.floor(Math.random() * (this.cols - 1));
+        rndRow = Math.floor(Math.random() * (this.rows - 1));
+      }
+
+      ctx.fillStyle = this.eventColor;
+      ctx.fillRect(rndCol * this.cellSize + 2, rndRow * this.cellSize + 2, this.cellSize - 4, this.cellSize - 4);
+
+      this.cells[rndCol][rndRow].hasEvent = true;
+      this.eventCells.push(this.cells[rndCol][rndRow]);
+
+      totalEvents--;
+    }
+  }
+
   hasUnvisited() {
     for (let col = 0; col < this.cols; col++) {
       for (let row = 0; row < this.rows; row++) {
@@ -166,11 +244,14 @@ class Maze {
             (mazeCell.row !== (this.rows - 1) && !this.cells[mazeCell.col][mazeCell.row + 1].visited));
   }
 
+  // Outlines the walls of the maze
   redraw() {
 
+    // Colors the maze background
     ctx.fillStyle = this.backgroundColor;
     ctx.fillRect(0, 0, mazeHeight, mazeWidth);
 
+    // Colors the maze end
     ctx.fillStyle = this.endColor;
     ctx.fillRect((this.cols - 1) * this.cellSize, (this.rows - 1) * this.cellSize, this.cellSize, this.cellSize);
 
@@ -206,6 +287,13 @@ class Maze {
       }
     }
 
+    ctx.fillStyle = this.eventColor;
+    
+    // Colors the event cells
+    for (let i = 0; i < this.eventCells.length; i++) {
+      ctx.fillRect(this.eventCells[i].col * this.cellSize + 2, this.eventCells[i].row * this.cellSize + 2, this.cellSize - 4, this.cellSize - 4);
+    }
+
     ctx.fillStyle = this.playerColor;
     ctx.fillRect((player.col * this.cellSize) + 2, (player.row * this.cellSize) + 2, this.cellSize - 4, this.cellSize - 4);
 
@@ -213,10 +301,32 @@ class Maze {
 
 }
 
+function check() {
+  // Displays randomized event message and removes event
+  for (let i = 0; i < maze.eventCells.length; i++) {
+    if (maze.eventCells[i].col == player.col && maze.eventCells[i].row == player.row) {
+      let rand = Math.floor(Math.random() * events.eventMessages.length);
+
+      // Each event message can be displayed a maximum of 3 times
+      while (events.eventMessages[rand].acquiredCount == 3) {
+        rand = Math.floor(Math.random() * events.eventMessages.length);
+      }
+
+      console.log(events.eventMessages[rand].message);
+      events.eventMessages[rand].acquiredCount++;
+      events.eventMessages[rand].acquired = true;
+      maze.eventCells.splice(i, 1);
+    }
+  }
+}
+
 function onClick(event) {
   maze.cols = document.getElementById("cols").value;
   maze.rows = document.getElementById("rows").value;
+  maze.eventCells = [];
+  player = new Player();
   maze.generate();
+  maze.generateEvents();
 }
 
 function onKeyDown(event) {
@@ -248,6 +358,8 @@ function onKeyDown(event) {
     default:
       break;
   }
+
+  check();
   maze.redraw();
 }
 
@@ -257,6 +369,7 @@ function onLoad() {
   ctx = canvas.getContext("2d");
 
   player = new Player();
+  events = new Events();
   maze = new Maze(20, 20, 25);
 
   document.addEventListener("keydown", onKeyDown);
