@@ -22,6 +22,13 @@ let mazeHeight;
 let mazeWidth;
 let player;
 let events;
+let currentLevel = 1;
+const multipliers = [
+  10,
+  15,
+  20,
+  25
+];
 const messages = [
   "Gained 15 pounds",
   "Class waitlisted",
@@ -119,15 +126,15 @@ class MazeCell {
 
 class Maze {
 
-  constructor(cols, rows, cellSize) {
+  constructor(level, cellSize) {
 
     this.backgroundColor = "#ffffff";
-    this.cols = cols;
+    this.cols = multipliers[level - 1];
     this.endColor = "#88FF88";
     this.mazeColor = "#000000";
     this.eventColor = "#a6dee0";
     this.playerColor = "#880088";
-    this.rows = rows;
+    this.rows = multipliers[level - 1];
     this.cellSize = cellSize;
 
     this.cells = [];
@@ -318,7 +325,7 @@ class Maze {
 
 }
 
-function check() {
+function checkEvent() {
   // Displays randomized event message and removes event
   for (let i = 0; i < maze.eventCells.length; i++) {
     let rand = Math.floor(Math.random() * events.eventMessages.length);
@@ -339,6 +346,39 @@ function check() {
   }
 }
 
+function checkWin() {
+  if (player.col == maze.cols - 1 && player.row == maze.rows - 1) {
+    if (currentLevel < 4) {
+      // *Display "Level Cleared" window here
+      toggleVisablity("nextLevel");
+    } else {
+      // *Display "You Won" window here
+      toggleVisablity("playAgain");
+    }
+
+    document.removeEventListener("keydown", onKeyDown);
+  }
+}
+
+function nextLevel() {
+  if (currentLevel < 4) {
+    currentLevel++;
+    toggleVisablity("nextLevel");
+  } else {
+    currentLevel = 1;
+    events = new Events();
+    toggleVisablity("playAgain");
+  }
+
+  document.getElementById("level").innerHTML = "Level " + currentLevel;
+
+  maze = new Maze(currentLevel, 25);
+  player = new Player();
+  maze.redraw();
+  document.addEventListener("keydown", onKeyDown);
+}
+
+// Shouldn't be necessary once Generate button is removed
 function onClick(event) {
   maze.cols = document.getElementById("cols").value;
   maze.rows = document.getElementById("rows").value;
@@ -378,8 +418,18 @@ function onKeyDown(event) {
       break;
   }
 
-  check();
+  checkEvent();
   maze.redraw();
+  checkWin();
+}
+
+// Hides/unhides html elements
+function toggleVisablity(id) {
+  if (document.getElementById(id).style.visibility == "visible") {
+    document.getElementById(id).style.visibility = "hidden";
+  } else {
+    document.getElementById(id).style.visibility = "visible";
+  }
 }
 
 function onLoad() {
@@ -389,9 +439,12 @@ function onLoad() {
 
   player = new Player();
   events = new Events();
-  maze = new Maze(20, 20, 25);
+  maze = new Maze(1, 25);
 
   document.addEventListener("keydown", onKeyDown);
+  document.getElementById("level").innerHTML = "Level " + currentLevel;
+  document.getElementById("nextLevel").addEventListener("click", nextLevel);
+  document.getElementById("playAgain").addEventListener("click", nextLevel);
   document.getElementById("generate").addEventListener("click", onClick);
 
 }
