@@ -70,6 +70,23 @@ class Events {
   
   }
 
+  achievementGet() {
+    let allAcquired = true;
+
+    for (let i = 0; i < this.eventMessages.length; i++) {
+      if (!this.eventMessages[i].acquired) {
+        allAcquired = false;
+        break;
+      }
+    }
+
+    if (allAcquired) {
+      console.log("Achievement get! You have collected all events!");
+    }
+
+    return allAcquired;
+  }
+
 }
 
 class EventMessage {
@@ -304,12 +321,14 @@ class Maze {
 function check() {
   // Displays randomized event message and removes event
   for (let i = 0; i < maze.eventCells.length; i++) {
+    let rand = Math.floor(Math.random() * events.eventMessages.length);
+    
     if (maze.eventCells[i].col == player.col && maze.eventCells[i].row == player.row) {
-      let rand = Math.floor(Math.random() * events.eventMessages.length);
-
-      // Each event message can be displayed a maximum of 3 times
-      while (events.eventMessages[rand].acquiredCount == 3) {
-        rand = Math.floor(Math.random() * events.eventMessages.length);
+      // If all event messages have not been collected, each message will be displayed a maximum of 3 times
+      if (!events.achievementGet()) {
+        while (events.eventMessages[rand].acquiredCount == 3) {
+          rand = Math.floor(Math.random() * events.eventMessages.length);
+        }
       }
 
       console.log(events.eventMessages[rand].message);
