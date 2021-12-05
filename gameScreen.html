@@ -18,7 +18,7 @@
 <!DOCTYPE html>
 <html lang="en">
   <head>
-    <link rel="stylesheet" href="main.css">
+    <link rel="stylesheet" href="style.css">
     <meta charset="UTF-8">
     <script src="script.js"></script>
     <link rel="preconnect" href="https://fonts.googleapis.com">
@@ -26,14 +26,21 @@
     <link href="https://fonts.googleapis.com/css2?family=VT323&display=swap" rel="stylesheet">
     <title>htmlMaze</title>
   </head>
-  <body >
-    <div class = "back">
-      <img src = "/Assets/welcome.png" alt = "background">
+  <body onload="onLoad();">
+    <h2></h2>
+    <canvas id="mainForm"></canvas>
+    <div id="settings">
+      <table>
+        <tbody>
+            <td>&nbsp;</td>
+            <td><input id="nextLevel" type="button" value="Next Level" /></td>
+          </tr><tr>
+            <td>&nbsp;</td>
+            <td><input id="playAgain" type="button" value="Play Again" /></td>
+          </tr>
+        </tbody>
+      </table>
     </div>
-    <div class = "buttons">
-      <a href = "gameScreen.html"><button id="start">Start!</button></a>
-      <div class = "divider"></div>
-      <button id="start">Instructions</button>
-    </div>
+    <h2 id="level"></h2>
   </body>
 </html>

@@ -1,0 +1,40 @@
+body,html {
+    font-family: 'VT323', monospace;
+    background-color: #aac6d3;
+}
+.back {
+    text-align: center;
+    position: relative;
+}
+.buttons {
+    position: relative;
+    text-align: center;
+
+}
+.divider {
+    position: relative;
+    width: 50px;
+    height:auto;
+    display:inline-block;
+}
+#start {
+    font-size: 20px;
+    font-weight: 200;
+    letter-spacing: 1px;
+    padding: 13px 50px 13px;
+    outline: 0;
+    border: 1px solid black;
+    cursor: pointer;
+    background-color: #dcbaff;
+  }
+  
+  #start::after {
+    content: "";
+    background-color: #dcbaff;
+    width: 100%;
+    z-index: -1;
+    position: absolute;
+    height: 100%;
+    top: 7px;
+    left: 7px;
+  }
