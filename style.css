@@ -84,3 +84,9 @@ body {
   left: 48%;
   top: 70%;
 }
+.buttons {
+  position: relative;
+  text-align: center;
+  width: 20%;
+  height: 10%;
+}

@@ -1,0 +1,30 @@
+body,html {
+    font-family: 'VT323', monospace;
+    background-color: #bac4ff;
+}
+.back {
+    text-align: center;
+    position: relative;
+    border: 5px rgb(13, 23, 41);
+}
+
+.divider {
+    position: relative;
+    width: 50px;
+    height:auto;
+    display:inline-block;
+}
+#start {
+    margin-left: 42%;
+    margin-right: auto;
+    font-size: 20px;
+    font-weight: 200;
+    letter-spacing: 1px;
+    padding: 13px 50px 13px;
+    outline: 0;
+    border: 9px solid rgb(11, 27, 43);
+    cursor: pointer;
+    background-color: #dcbaff;
+  }
+  
+ 

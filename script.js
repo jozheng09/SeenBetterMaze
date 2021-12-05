@@ -345,9 +345,9 @@ function checkWin() {
     if (currentLevel < 4) {
       toggleVisablity("nextLevel");
     } else {
+      document.location.href = "endScreen.html";
       toggleVisablity("playAgain");
     }
-
     document.removeEventListener("keydown", onKeyDown);
   }
 }
@@ -360,7 +360,8 @@ function nextLevel() {
   } else {
     currentLevel = 1;
     events = new Events();
-    toggleVisablity("playAgain");
+    document.getElementById("playAgain").style.visibility == "visible";
+    //toggleVisablity("playAgain");
   }
 
   document.getElementById("level").innerHTML = "Level " + currentLevel;
