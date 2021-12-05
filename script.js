@@ -29,6 +29,45 @@ const multipliers = [
   20,
   25
 ];
+// var imgArray = new Array();
+// imgArray[0] = new Image();
+// imageArray[0].src = '/Assets/recruiterMessage.png'
+// imgArray[1] = new Image();
+// imageArray[1].src = '/Assets/recruiterMessage.png'
+// imgArray[2] = new Image();
+// imageArray[2].src = '/Assets/recruiterMessage.png'
+// imgArray[3] = new Image();
+// imageArray[3].src = '/Assets/recruiterMessage.png'
+// imgArray[4] = new Image();
+// imageArray[4].src = '/Assets/recruiterMessage.png'
+// imgArray[5] = new Image();
+// imageArray[5].src = '/Assets/recruiterMessage.png'
+// imgArray[6] = new Image();
+// imageArray[6].src = '/Assets/recruiterMessage.png'
+// imgArray[7] = new Image();
+// imageArray[7].src = '/Assets/recruiterMessage.png'
+// imgArray[8] = new Image();
+// imageArray[8].src = '/Assets/recruiterMessage.png'
+// imgArray[9] = new Image();
+// imageArray[9].src = '/Assets/recruiterMessage.png'
+// imgArray[10] = new Image();
+// imageArray[10].src = '/Assets/recruiterMessage.png'
+// imgArray[11] = new Image();
+// imageArray[11].src = '/Assets/recruiterMessage.png'
+// imgArray[12] = new Image();
+// imageArray[12].src = '/Assets/recruiterMessage.png'
+// imgArray[13] = new Image();
+// imageArray[13].src = '/Assets/recruiterMessage.png'
+// imgArray[14] = new Image();
+// imageArray[14].src = '/Assets/recruiterMessage.png'
+// imgArray[15] = new Image();
+// imageArray[15].src = '/Assets/recruiterMessage.png'
+// imgArray[16] = new Image();
+// imageArray[16].src = '/Assets/recruiterMessage.png'
+// imgArray[17] = new Image();
+// imageArray[17].src = '/Assets/recruiterMessage.png'
+// imgArray[18] = new Image();
+// imageArray[18].src = '/Assets/recruiterMessage.png'
 const messages = [
   "Gained 15 pounds",
   "Class waitlisted",
@@ -57,7 +96,6 @@ class Player {
     this.col = 0;
     this.row = 0;
   }
-
 }
 
 class Events {
@@ -337,7 +375,6 @@ function checkEvent() {
           rand = Math.floor(Math.random() * events.eventMessages.length);
         }
       }
-
       console.log(events.eventMessages[rand].message);
       events.eventMessages[rand].acquiredCount++;
       events.eventMessages[rand].acquired = true;
