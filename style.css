@@ -21,7 +21,7 @@
 }
 
 table, tbody, tr, td {
-  text-align: left;
+  text-align: center;
 }
 
 #nextLevel {
@@ -48,5 +48,7 @@ table, tbody, tr, td {
 body {
   background-image: url(Assets/Level1.png);
   background-repeat: no-repeat;
-  max-width: 600px;
+  background-color: #213266;
+  background-position: center;
+  height: 100%;
 }
