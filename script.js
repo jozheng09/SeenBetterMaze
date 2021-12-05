@@ -1,5 +1,6 @@
 /*
- * This file is part of htmlMaze	.
+ * This file is part of htmlMaze created by JakeMoe.
+ * <https://github.com/JakeMoe/htmlMaze>
  *
  * htmlMaze is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -23,72 +24,15 @@ let mazeWidth;
 let player;
 let events;
 let currentLevel = 1;
+let sprite = new Image(25, 25);
+let eventSprite = new Image(246.75, 90);
 const multipliers = [
   10,
   15,
   20,
   25
 ];
-// var imgArray = new Array();
-// imgArray[0] = new Image();
-// imageArray[0].src = '/Assets/recruiterMessage.png'
-// imgArray[1] = new Image();
-// imageArray[1].src = '/Assets/recruiterMessage.png'
-// imgArray[2] = new Image();
-// imageArray[2].src = '/Assets/recruiterMessage.png'
-// imgArray[3] = new Image();
-// imageArray[3].src = '/Assets/recruiterMessage.png'
-// imgArray[4] = new Image();
-// imageArray[4].src = '/Assets/recruiterMessage.png'
-// imgArray[5] = new Image();
-// imageArray[5].src = '/Assets/recruiterMessage.png'
-// imgArray[6] = new Image();
-// imageArray[6].src = '/Assets/recruiterMessage.png'
-// imgArray[7] = new Image();
-// imageArray[7].src = '/Assets/recruiterMessage.png'
-// imgArray[8] = new Image();
-// imageArray[8].src = '/Assets/recruiterMessage.png'
-// imgArray[9] = new Image();
-// imageArray[9].src = '/Assets/recruiterMessage.png'
-// imgArray[10] = new Image();
-// imageArray[10].src = '/Assets/recruiterMessage.png'
-// imgArray[11] = new Image();
-// imageArray[11].src = '/Assets/recruiterMessage.png'
-// imgArray[12] = new Image();
-// imageArray[12].src = '/Assets/recruiterMessage.png'
-// imgArray[13] = new Image();
-// imageArray[13].src = '/Assets/recruiterMessage.png'
-// imgArray[14] = new Image();
-// imageArray[14].src = '/Assets/recruiterMessage.png'
-// imgArray[15] = new Image();
-// imageArray[15].src = '/Assets/recruiterMessage.png'
-// imgArray[16] = new Image();
-// imageArray[16].src = '/Assets/recruiterMessage.png'
-// imgArray[17] = new Image();
-// imageArray[17].src = '/Assets/recruiterMessage.png'
-// imgArray[18] = new Image();
-// imageArray[18].src = '/Assets/recruiterMessage.png'
-const messages = [
-  "Gained 15 pounds",
-  "Class waitlisted",
-  "Caught cheating on a test",
-  "Bad project teammate",
-  "Messy roommate",
-  "Failed internship interview",
-  "Ghosted by crush",
-  "Aced an exam",
-  "Failed an exam",
-  "Made a friend",
-  "First college party",
-  "Ghosted by recruiter",
-  "Found rats in dorm",
-  "Contemplate dropping out",
-  "Addicted to video games",
-  "Missed a 9 am lecture",
-  "Got sick from dining hall food",
-  "Got a significant other",
-  "Got cheated on"
-];
+const messageCount = 19;
 
 class Player {
 
@@ -109,8 +53,8 @@ class Events {
 
   generate() {
 
-    for (let i = 0; i < messages.length; i++) {
-      this.eventMessages.push(new EventMessage(messages[i]));
+    for (let i = 0; i < messageCount; i++) {
+      this.eventMessages.push(new EventMessage("/Assets/EventMessages/achievementArtboard " + (i + 1) + ".png"));
     }
   
   }
@@ -183,6 +127,7 @@ class Maze {
 
   }
 
+  // Randomizes a maze
   generate() {
 
     mazeHeight = this.rows * this.cellSize;
@@ -266,9 +211,9 @@ class Maze {
 
   }
 
+  // Populates the maze with events
   generateEvents() {
-    // *Change this later to be based off level difficulty (size)
-    let totalEvents = 8;
+    let totalEvents = 6 * multipliers[currentLevel - 1] / 10;
     let rndCol = Math.floor(Math.random() * (this.cols - 1));
     let rndRow = Math.floor(Math.random() * (this.rows - 1));
 
@@ -320,6 +265,7 @@ class Maze {
     ctx.strokeStyle = this.mazeColor;
     ctx.strokeRect(0, 0, mazeHeight, mazeWidth);
 
+    // Draws the maze walls
     for (let col = 0; col < this.cols; col++) {
       for (let row = 0; row < this.rows; row++) {
         if (this.cells[col][row].eastWall) {
@@ -356,15 +302,19 @@ class Maze {
       ctx.fillRect(this.eventCells[i].col * this.cellSize + 2, this.eventCells[i].row * this.cellSize + 2, this.cellSize - 4, this.cellSize - 4);
     }
 
-    ctx.fillStyle = this.playerColor;
-    ctx.fillRect((player.col * this.cellSize) + 2, (player.row * this.cellSize) + 2, this.cellSize - 4, this.cellSize - 4);
+    sprite.src = "/Assets/CharacterNobg.png";
+
+    // Loads the player sprite
+    sprite.onload = function() {
+      ctx.drawImage(sprite, player.col * 25, player.row * 25, sprite.width, sprite.height);
+    }
 
   }
 
 }
 
 function checkEvent() {
-  // Displays randomized event message and removes event
+  // Displays randomized event message
   for (let i = 0; i < maze.eventCells.length; i++) {
     let rand = Math.floor(Math.random() * events.eventMessages.length);
     
@@ -375,7 +325,13 @@ function checkEvent() {
           rand = Math.floor(Math.random() * events.eventMessages.length);
         }
       }
-      console.log(events.eventMessages[rand].message);
+      eventSprite.src = events.eventMessages[rand].message;
+
+      // Displays eventMessage image
+      eventSprite.onload = function() {
+        ctx.drawImage(eventSprite, (multipliers[currentLevel - 1] * 25 - eventSprite.width) / 2, (multipliers[currentLevel - 1] * 25 - eventSprite.height) / 2, eventSprite.width, eventSprite.height);
+      }
+
       events.eventMessages[rand].acquiredCount++;
       events.eventMessages[rand].acquired = true;
       maze.eventCells.splice(i, 1);
@@ -383,13 +339,12 @@ function checkEvent() {
   }
 }
 
+// Checks whether to display the Next Level/Play Again button or not
 function checkWin() {
   if (player.col == maze.cols - 1 && player.row == maze.rows - 1) {
     if (currentLevel < 4) {
-      // *Display "Level Cleared" window here
       toggleVisablity("nextLevel");
     } else {
-      // *Display "You Won" window here
       toggleVisablity("playAgain");
     }
 
@@ -397,6 +352,7 @@ function checkWin() {
   }
 }
 
+// Creates a new maze level
 function nextLevel() {
   if (currentLevel < 4) {
     currentLevel++;
@@ -415,16 +371,7 @@ function nextLevel() {
   document.addEventListener("keydown", onKeyDown);
 }
 
-// Shouldn't be necessary once Generate button is removed
-function onClick(event) {
-  maze.cols = document.getElementById("cols").value;
-  maze.rows = document.getElementById("rows").value;
-  maze.eventCells = [];
-  player = new Player();
-  maze.generate();
-  maze.generateEvents();
-}
-
+// Adjusts player's position when an arrow key is pressed
 function onKeyDown(event) {
   switch (event.keyCode) {
     case 37:
@@ -482,5 +429,4 @@ function onLoad() {
   document.getElementById("level").innerHTML = "Level " + currentLevel;
   document.getElementById("nextLevel").addEventListener("click", nextLevel);
   document.getElementById("playAgain").addEventListener("click", nextLevel);
-  document.getElementById("generate").addEventListener("click", onClick);
 }
