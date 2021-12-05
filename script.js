@@ -446,5 +446,4 @@ function onLoad() {
   document.getElementById("nextLevel").addEventListener("click", nextLevel);
   document.getElementById("playAgain").addEventListener("click", nextLevel);
   document.getElementById("generate").addEventListener("click", onClick);
-
 }
