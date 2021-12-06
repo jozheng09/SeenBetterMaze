@@ -82,11 +82,29 @@ body {
 #level {
   position: absolute;
   left: 48%;
-  top: 70%;
+  top: 85%;
 }
 .buttons {
   position: relative;
   text-align: center;
   width: 20%;
   height: 10%;
+}
+
+#main-menu {
+  text-decoration: none;
+  top: 85%;
+  left: 27%;
+  position: absolute;
+  font-size: 20px;
+  font-weight: 500;
+  letter-spacing: 1px;
+  padding: 13px 30px 13px;
+  border: 1px solid black;
+  cursor: pointer;
+  background-color: #7ea1ce;
+  color: rgb(8, 16, 43);
+}
+.audio-container {
+  visibility: hidden;
 }

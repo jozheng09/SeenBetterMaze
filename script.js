@@ -329,6 +329,8 @@ function checkEvent() {
 
       // Displays eventMessage image
       eventSprite.onload = function() {
+        var audio = new Audio(src="Assets/eventsound.mp3");
+        audio.play();
         ctx.drawImage(eventSprite, (multipliers[currentLevel - 1] * 25 - eventSprite.width) / 2, (multipliers[currentLevel - 1] * 25 - eventSprite.height) / 2, eventSprite.width, eventSprite.height);
       }
 
@@ -342,9 +344,11 @@ function checkEvent() {
 // Checks whether to display the Next Level/Play Again button or not
 function checkWin() {
   if (player.col == maze.cols - 1 && player.row == maze.rows - 1) {
+    var audio = new Audio(src="Assets/eventsound.mp3");
+      audio.play(); 
     if (currentLevel < 4) {
       toggleVisablity("nextLevel");
-    } else {
+    } else {     
       document.location.href = "endScreen.html";
       toggleVisablity("playAgain");
     }
@@ -355,6 +359,8 @@ function checkWin() {
 // Creates a new maze level
 function nextLevel() {
   if (currentLevel < 4) {
+    var audio = new Audio(src="Assets/nextlevel.mp3");
+    audio.play(); 
     currentLevel++;
     toggleVisablity("nextLevel");
   } else {
