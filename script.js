@@ -54,7 +54,7 @@ class Events {
   generate() {
 
     for (let i = 0; i < messageCount; i++) {
-      this.eventMessages.push(new EventMessage("/Assets/EventMessages/achievementArtboard " + (i + 1) + ".png"));
+      this.eventMessages.push(new EventMessage("Assets/EventMessages/achievementArtboard " + (i + 1) + ".png"));
     }
   
   }
