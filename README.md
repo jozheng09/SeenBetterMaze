@@ -10,3 +10,11 @@ Of course, running into challenges in college is inevitable, so some of these ch
 How to Play: Use the arrow keys to move through the maze, and finish all four mazes to graduate!
 
 Click this link to play: https://jozheng09.github.io/SeenBetterMaze/
+
+Contributers:
+Joanna Zheng
+Josh Kim
+Chelsea Winata
+Jennifer Bai
+
+Github referenced: https://github.com/JakeMoe/htmlMaze
