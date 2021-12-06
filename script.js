@@ -302,7 +302,7 @@ class Maze {
       ctx.fillRect(this.eventCells[i].col * this.cellSize + 2, this.eventCells[i].row * this.cellSize + 2, this.cellSize - 4, this.cellSize - 4);
     }
 
-    sprite.src = "/Assets/CharacterNobg.png";
+    sprite.src = "Assets/CharacterNobg.png";
 
     // Loads the player sprite
     sprite.onload = function() {
